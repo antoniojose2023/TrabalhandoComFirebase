@@ -1,11 +1,10 @@
 package antoniojoseuchoa.com.br.model
 
 
-
 data class Anotacao(
-    var id: Long,
+    var id: String,
     var title: String,
     var description: String
 ) {
-    constructor(): this(0, "", "")
+    constructor(): this("", "", "")
 }

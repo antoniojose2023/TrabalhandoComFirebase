@@ -1,5 +1,6 @@
 package antoniojoseuchoa.com.br.database
 
+import android.annotation.SuppressLint
 import antoniojoseuchoa.com.br.model.Anotacao
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
@@ -8,6 +9,7 @@ import java.util.UUID
 
 abstract class Database {
     companion object{
+        @SuppressLint("StaticFieldLeak")
         private val firestore = Firebase.firestore
         private val auth = FirebaseAuth.getInstance()
 
@@ -15,19 +17,18 @@ abstract class Database {
 
         fun saveAnnotation(anotacao: Anotacao): Boolean{
               var validate = false
-              anotacao.id = UUID.randomUUID().toString().toLong()
 
-              val anotacaoMap = mapOf(
+              val anotacaoMap = mutableMapOf(
                    "id" to anotacao.id,
-                   "nome" to anotacao.title,
+                   "name" to anotacao.title,
                    "description" to anotacao.description
              )
 
-             val reference = firestore.collection("Anotação_usuários").document(usuarioCorrente).collection("anotacao").document(anotacao.id.toString())
-             reference.set( anotacaoMap ).addOnCompleteListener {
-                   if(it.isSuccessful){
-                        validate = true
-                   }
+             val reference = firestore.collection("Anotação_usuários").document(usuarioCorrente).collection("anotacao").document(anotacao.id)
+             reference.set( anotacaoMap ).addOnSuccessListener {
+                     validate = true
+             }.addOnFailureListener {
+                     validate = false
              }
 
             return validate
@@ -41,7 +42,7 @@ abstract class Database {
                 "description" to anotacao.description
             )
 
-            val reference = firestore.collection("Anotação_usuários").document(usuarioCorrente).collection("anotacao").document(anotacao.id.toString())
+            val reference = firestore.collection("Anotação_usuários").document(usuarioCorrente).collection("anotacao").document(anotacao.id)
             reference.update( anotacaoMap ).addOnCompleteListener {
                 if(it.isSuccessful){
                     validate = true
@@ -84,7 +85,6 @@ abstract class Database {
 
              return list
         }
-
 
     }
 
