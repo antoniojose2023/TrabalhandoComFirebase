@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "691257521041",
+    "project_id": "autenticacao-4821a",
+    "storage_bucket": "autenticacao-4821a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:691257521041:android:9eb03c9dc301b2bc2de030",
+        "android_client_info": {
+          "package_name": "antoniojoseuchoa.com.br"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "691257521041-ijrb8plae6bq9i01p3qqbmll4je6vc72.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "antoniojoseuchoa.com.br",
+            "certificate_hash": "cbfe9b1f7ce104292dc201455de74e254c8a63d6"
+          }
+        },
+        {
+          "client_id": "691257521041-nrp1p157h7st7alg7jqfucp2eacq9tvq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBsQAjBf3wH5JMaQFcM35uas1Z_FG9nt8c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "691257521041-nrp1p157h7st7alg7jqfucp2eacq9tvq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

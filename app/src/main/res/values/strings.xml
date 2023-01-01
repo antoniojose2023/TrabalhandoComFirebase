@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">TrabalhandoComFirebase</string>
+    <string name="token">691257521041-ijrb8plae6bq9i01p3qqbmll4je6vc72.apps.googleusercontent.com</string>
+
+    <string name="facebook_app_id">1051439898913726</string>
+    <string name="fb_login_protocol_scheme">fb1234</string>
+    <string name="facebook_client_token">7b77ad0b68092eb5a076eebee1c61da3</string>
+
+</resources>
