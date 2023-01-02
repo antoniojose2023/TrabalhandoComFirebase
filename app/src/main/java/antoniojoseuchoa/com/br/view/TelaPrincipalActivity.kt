@@ -6,7 +6,9 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.SearchView.OnQueryTextListener
 import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import antoniojoseuchoa.com.br.R
 import antoniojoseuchoa.com.br.adapter.AdapterAnotacoes
@@ -48,6 +50,26 @@ class TelaPrincipalActivity : AppCompatActivity() {
             intent.putExtra("Anotacao", anotacao)
             startActivity(intent)
         }
+
+        binding.svAnotacao.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                Database.consultaAnotacao(newText!!, list, adapter)
+                return true
+            }
+
+        })
+
+        binding.svAnotacao.setOnCloseListener(object : SearchView.OnCloseListener{
+            override fun onClose(): Boolean {
+                Database.getAnotacao(list, adapter)
+                return true
+            }
+
+        })
     }
 
 

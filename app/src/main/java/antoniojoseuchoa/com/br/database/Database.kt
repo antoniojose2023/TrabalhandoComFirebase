@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import antoniojoseuchoa.com.br.adapter.AdapterAnotacoes
 import antoniojoseuchoa.com.br.model.Anotacao
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import java.util.UUID
@@ -70,7 +71,7 @@ abstract class Database {
 
         fun getAnotacao(list: MutableList<Anotacao>, adapterAnotacoes: AdapterAnotacoes){
 
-              val reference = firestore.collection("Anotação_usuários").document(usuarioCorrente).collection("anotacao")
+              val reference = firestore.collection("Anotação_usuários").document(usuarioCorrente).collection("anotacao").orderBy("title", Query.Direction.ASCENDING).limit(5)
               reference.addSnapshotListener { value, error ->
                   if (error != null){
                       return@addSnapshotListener
@@ -86,8 +87,29 @@ abstract class Database {
                       }
                   }
               }
+        }
+
+        fun consultaAnotacao(textoPesquisa: String, list: MutableList<Anotacao>, adapterAnotacoes: AdapterAnotacoes){
+
+            val reference = firestore.collection("Anotação_usuários").document(usuarioCorrente).collection("anotacao").orderBy("title", Query.Direction.ASCENDING)
+            reference.startAt(textoPesquisa).endAt(textoPesquisa+"\uf88f").addSnapshotListener { value, error ->
+                if (error != null){
+                    return@addSnapshotListener
+                }else{
+                    list.clear()
+                    for(item in value!!.documents){
+                        val anotacao = item.toObject(Anotacao::class.java)
+                        if (anotacao != null) {
+                            list.add( anotacao )
+                        }
+
+                        adapterAnotacoes.notifyDataSetChanged()
+                    }
+                }
+            }
 
         }
+
 
     }
 

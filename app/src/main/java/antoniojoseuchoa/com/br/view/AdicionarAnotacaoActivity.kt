@@ -10,14 +10,18 @@ import android.widget.Toast
 import antoniojoseuchoa.com.br.R
 import antoniojoseuchoa.com.br.database.Database
 import antoniojoseuchoa.com.br.databinding.ActivityAdicionarAnotacaoBinding
+import antoniojoseuchoa.com.br.dialog.DialogLoader
 import antoniojoseuchoa.com.br.model.Anotacao
 import java.util.UUID
 
 class AdicionarAnotacaoActivity : AppCompatActivity() {
     private val binding by lazy { ActivityAdicionarAnotacaoBinding.inflate(layoutInflater) }
+    private lateinit var dialogLoader: DialogLoader
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
+        dialogLoader = DialogLoader(this)
 
         supportActionBar!!.title = "Anotações"
 
@@ -28,8 +32,10 @@ class AdicionarAnotacaoActivity : AppCompatActivity() {
     }
 
     fun save(){
+        dialogLoader.showDialog()
         if(binding.editTitle.text.toString().isEmpty() || binding.editDescritpion.text.toString().isEmpty()){
                 showMessage("Campos vázios")
+                dialogLoader.closeDialog()
         }else{
             val anotacao = Anotacao()
             binding.run {
@@ -41,6 +47,7 @@ class AdicionarAnotacaoActivity : AppCompatActivity() {
            val response = Database.saveAnnotation( anotacao )
            Handler(Looper.getMainLooper()).postDelayed({
                 redirecionarTelaPrincipal()
+                dialogLoader.closeDialog()
            }, 3000)
 
 
