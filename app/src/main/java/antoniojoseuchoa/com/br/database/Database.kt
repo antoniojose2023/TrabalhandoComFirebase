@@ -1,6 +1,7 @@
 package antoniojoseuchoa.com.br.database
 
 import android.annotation.SuppressLint
+import antoniojoseuchoa.com.br.adapter.AdapterAnotacoes
 import antoniojoseuchoa.com.br.model.Anotacao
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
@@ -20,7 +21,7 @@ abstract class Database {
 
               val anotacaoMap = mutableMapOf(
                    "id" to anotacao.id,
-                   "name" to anotacao.title,
+                   "title" to anotacao.title,
                    "description" to anotacao.description
              )
 
@@ -38,7 +39,7 @@ abstract class Database {
             var validate = false
 
             val anotacaoMap = mapOf(
-                "nome" to anotacao.title,
+                "title" to anotacao.title,
                 "description" to anotacao.description
             )
 
@@ -53,37 +54,39 @@ abstract class Database {
         }
 
 
-        fun deleteAnnotation(anotacao: Anotacao): Boolean{
+        fun deleteAnnotation(anotacao: Anotacao, adapterAnotacoes: AdapterAnotacoes): Boolean{
             var validate = false
 
-            val reference = firestore.collection("Anotação_usuários").document(usuarioCorrente).collection("anotacao").document(anotacao.id.toString())
+            val reference = firestore.collection("Anotação_usuários").document(usuarioCorrente).collection("anotacao").document(anotacao.id)
             reference.delete().addOnCompleteListener {
                 if(it.isSuccessful){
                     validate = true
+                    adapterAnotacoes.notifyDataSetChanged()
                 }
             }
 
             return validate
         }
 
-        fun getAnotacao(): List<Anotacao>{
-              var list: MutableList<Anotacao> = mutableListOf()
+        fun getAnotacao(list: MutableList<Anotacao>, adapterAnotacoes: AdapterAnotacoes){
 
               val reference = firestore.collection("Anotação_usuários").document(usuarioCorrente).collection("anotacao")
               reference.addSnapshotListener { value, error ->
                   if (error != null){
                       return@addSnapshotListener
                   }else{
+                      list.clear()
                       for(item in value!!.documents){
                           val anotacao = item.toObject(Anotacao::class.java)
                           if (anotacao != null) {
                               list.add( anotacao )
                           }
+
+                          adapterAnotacoes.notifyDataSetChanged()
                       }
                   }
               }
 
-             return list
         }
 
     }

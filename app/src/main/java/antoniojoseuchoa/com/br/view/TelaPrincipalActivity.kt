@@ -12,12 +12,14 @@ import antoniojoseuchoa.com.br.R
 import antoniojoseuchoa.com.br.adapter.AdapterAnotacoes
 import antoniojoseuchoa.com.br.database.Database
 import antoniojoseuchoa.com.br.databinding.ActivityTelaPrincipalBinding
+import antoniojoseuchoa.com.br.model.Anotacao
 import com.google.firebase.auth.FirebaseAuth
 
 class TelaPrincipalActivity : AppCompatActivity() {
 
     private val auth = FirebaseAuth.getInstance()
     private val binding by lazy { ActivityTelaPrincipalBinding.inflate(layoutInflater) }
+    private var list: MutableList<Anotacao> = mutableListOf()
 
     private lateinit var adapter : AdapterAnotacoes
 
@@ -32,12 +34,20 @@ class TelaPrincipalActivity : AppCompatActivity() {
                 showScreenAddAnnotation()
         }
 
-        val list = Database.getAnotacao()
-        Toast.makeText(this, "${list.size}", Toast.LENGTH_LONG).show()
-
         binding.rvAnnotation.layoutManager = LinearLayoutManager(this)
         adapter = AdapterAnotacoes(this, list)
         binding.rvAnnotation.adapter = adapter
+        Database.getAnotacao(list, adapter)
+
+        adapter.clickDelete = {
+                Database.deleteAnnotation( it, adapter )
+        }
+
+        adapter.clickUpdate = { anotacao ->
+            val intent = Intent(this, AtualizarAnotacaoActivity::class.java)
+            intent.putExtra("Anotacao", anotacao)
+            startActivity(intent)
+        }
     }
 
 

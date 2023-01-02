@@ -10,6 +10,9 @@ import antoniojoseuchoa.com.br.model.Anotacao
 
 class AdapterAnotacoes(val context: Context, val list: List<Anotacao>): RecyclerView.Adapter<AdapterAnotacoes.ViewHolder>() {
 
+    var clickDelete: (Anotacao) -> Unit = {}
+    var clickUpdate: (Anotacao) -> Unit = {}
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(context)
         return ViewHolder(ItemAnotacoesBinding.inflate(layoutInflater, parent, false))
@@ -22,15 +25,13 @@ class AdapterAnotacoes(val context: Context, val list: List<Anotacao>): Recycler
             tvAnotacaoItem.text = item.description
 
             ivUpdate.setOnClickListener {
-                    Toast.makeText(context, "Clique 1", Toast.LENGTH_LONG).show()
+                   clickUpdate(item)
             }
 
             ivDelete.setOnClickListener {
-                Toast.makeText(context, "Clique 2", Toast.LENGTH_LONG).show()
+                clickDelete(item)
             }
         }
-
-
 
     }
 
