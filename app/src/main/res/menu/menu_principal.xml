@@ -8,4 +8,10 @@
         app:showAsAction="never"
         />
 
+    <item
+        android:id="@+id/menu_perfil"
+        android:title="Perfil"
+        app:showAsAction="never"
+        />
+
 </menu>

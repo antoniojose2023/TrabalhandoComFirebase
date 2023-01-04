@@ -15,6 +15,21 @@
         android:theme="@style/Theme.TrabalhandoComFirebase"
         tools:targetApi="31">
         <activity
+            android:name=".view.CadastroActivity"
+            android:exported="false" android:parentActivityName=".view.MainActivity">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".view.PerfilActivity"
+            android:exported="false"
+            android:parentActivityName=".view.TelaPrincipalActivity">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".view.AtualizarAnotacaoActivity"
             android:exported="false">
             <meta-data

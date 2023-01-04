@@ -32,6 +32,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        binding.tvCadastro.setOnClickListener {
+            startActivity(Intent(this, CadastroActivity::class.java))
+        }
+
         if(auth.currentUser != null){
              showScreenMain()
         }
@@ -63,8 +67,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        callbackManager.onActivityResult(resultCode, resultCode,data)
-        super.onActivityResult(requestCode, resultCode, data)
+           super.onActivityResult(requestCode, resultCode, data)
+           callbackManager.onActivityResult(resultCode, resultCode,data)
 
     }
 

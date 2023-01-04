@@ -85,6 +85,10 @@ class TelaPrincipalActivity : AppCompatActivity() {
                      auth.signOut()
                      showScreenMain()
                 }
+
+                R.id.menu_perfil ->{
+                    startActivity(Intent(this, PerfilActivity::class.java))
+                }
         }
         return super.onOptionsItemSelected(item)
     }

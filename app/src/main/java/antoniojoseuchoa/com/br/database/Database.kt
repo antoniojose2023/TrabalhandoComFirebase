@@ -1,19 +1,30 @@
 package antoniojoseuchoa.com.br.database
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.app.Dialog
+import android.content.Context
+import android.net.Uri
 import antoniojoseuchoa.com.br.adapter.AdapterAnotacoes
+import antoniojoseuchoa.com.br.dialog.DialogLoader
 import antoniojoseuchoa.com.br.model.Anotacao
+import antoniojoseuchoa.com.br.view.MainActivity
+import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import de.hdodenhof.circleimageview.CircleImageView
 import java.util.UUID
 
 abstract class Database {
+
     companion object{
         @SuppressLint("StaticFieldLeak")
         private val firestore = Firebase.firestore
         private val auth = FirebaseAuth.getInstance()
+        private val storage = FirebaseStorage.getInstance()
 
         private val usuarioCorrente = auth.currentUser!!.uid
 
@@ -110,6 +121,46 @@ abstract class Database {
 
         }
 
+        fun uploadImagemUsuario(uri: Uri, activity: Activity){
+                val idUsuarioLogado = auth.currentUser!!.uid
+                val nomeImagem = "imagem"+System.currentTimeMillis().toString()
+                val reference = storage.getReference().child("imagens/usuario/${idUsuarioLogado}/$nomeImagem")
+
+                reference.putFile(uri).addOnSuccessListener {
+
+                        reference.downloadUrl.addOnSuccessListener{
+                            salvarImagemUsuarioBanco(it.toString())
+                        }
+                }.addOnFailureListener {
+
+                }
+        }
+
+        fun salvarImagemUsuarioBanco(url: String){
+               val imagemMap = mapOf(
+                   "url" to url
+               )
+               val reference = firestore.collection("foto_usuario").document(usuarioCorrente)
+               reference.set(imagemMap).addOnSuccessListener{
+
+               }.addOnFailureListener {
+
+               }
+        }
+
+        fun recuperarImagemUsuario(activity: Activity, circleImageView: CircleImageView){
+
+            val reference = firestore.collection("foto_usuario").document(usuarioCorrente)
+            reference.addSnapshotListener { value, error ->
+
+                if(error != null){ return@addSnapshotListener}
+
+                val url = value!!.get("url")
+                Glide.with(activity).load( url ).into(circleImageView)
+
+            }
+            
+        }
 
     }
 
