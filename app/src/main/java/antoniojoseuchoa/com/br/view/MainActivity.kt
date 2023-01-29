@@ -32,6 +32,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        binding.btEntrarLogin.setOnClickListener {
+            loginComEmailSenha()
+        }
+
         binding.tvCadastro.setOnClickListener {
             startActivity(Intent(this, CadastroActivity::class.java))
         }
@@ -51,16 +55,16 @@ class MainActivity : AppCompatActivity() {
         //login com o facebook
         binding.btFacebook.registerCallback(callbackManager, object : FacebookCallback<LoginResult>{
             override fun onSuccess(result: LoginResult?) {
-                Toast.makeText(applicationContext, "Login efetuado com sucesso.", Toast.LENGTH_LONG).show()
+                Toast.makeText(baseContext, "Login efetuado com sucesso.", Toast.LENGTH_LONG).show()
                 showScreenMain()
             }
 
             override fun onCancel() {
-                Toast.makeText(applicationContext, "Erro ao autenticar", Toast.LENGTH_LONG).show()
+                Toast.makeText(baseContext, "Erro ao autenticar", Toast.LENGTH_LONG).show()
             }
 
             override fun onError(error: FacebookException?) {
-                Toast.makeText(applicationContext, "Erro ao autenticar", Toast.LENGTH_LONG).show()
+                Toast.makeText(baseContext, "Erro ao autenticar", Toast.LENGTH_LONG).show()
             }
         })
 
@@ -112,6 +116,24 @@ class MainActivity : AppCompatActivity() {
          }.addOnFailureListener {
              Toast.makeText(this, "erro.${it.message}", Toast.LENGTH_LONG).show()
          }
+    }
+
+
+    //Login com email e senha
+    fun loginComEmailSenha(){
+        val email = binding.editEmailLogin.text.toString()
+        val senha = binding.editSenhaLogin.text.toString()
+
+        if(email.isEmpty() || senha.isEmpty()){
+            Toast.makeText(this, "Campo vázio", Toast.LENGTH_LONG).show()
+        }else{
+            auth.signInWithEmailAndPassword(email,senha).addOnSuccessListener {
+                Toast.makeText(this, "Login efetuado com sucesso.", Toast.LENGTH_LONG).show()
+                showScreenMain()
+            }.addOnFailureListener{
+                Toast.makeText(this, "erro.${it.message}", Toast.LENGTH_LONG).show()
+            }
+        }
     }
 
 
